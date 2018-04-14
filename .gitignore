@@ -4,6 +4,7 @@
 
 
 # Custom files
+cmake-build-debug
 
 # IntelliJ project files
 .idea
