@@ -3,4 +3,4 @@ project(algolib)
 
 set(CMAKE_CXX_STANDARD 11)
 
-add_executable(algolib main.cpp ufds.cpp bt.cpp prime.cpp AVL.cpp algo.cpp bit_man.cpp suffix_array_lcp.cpp kmp.cpp LIS.cpp bi_tree.cpp)
+add_executable(algolib main.cpp ufds.cpp bt.cpp prime.cpp AVL.cpp algo.cpp bit_man.cpp suffix_array_lcp.cpp kmp.cpp LIS.cpp bi_tree.cpp dfs.cpp bfs.cpp)
