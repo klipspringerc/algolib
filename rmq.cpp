@@ -48,9 +48,11 @@ public:
 };
 
 void sparseTable() {
-    int a[10] = {1,5,3,23,64,2,54,11,3,0};
-    auto st = RMQST(a, 10);
-    printf("min for the range: %d\n", st.query(2,3));
+    int n = 7, a[] = {18, 17, 13, 19, 15, 11, 20};
+    RMQST rmq(a, n);
+    for (int i = 0; i < n; i++)
+        for (int j = i; j < n; j++)
+            printf("RMQ(%d, %d) = %d\n", i, j, rmq.query(i, j));
 }
 
 int main() {
