@@ -87,8 +87,37 @@ void articulationPointAndBridge(int v) {
     }
 }
 
+// Strongly connected component: a directed graph is called strongly connected if there is a path in each
+// direction between each pair of the vertices of the graph (every v is reachable from every other v)
 
-
+vector<bool> visited;
+vi s; // auxiliary stack
+int numSCC;
+void tarjanSCC(int v) {
+    dfs_low[v] = dfs_num[v] = dfs_counter++;
+    s.push_back(v);
+    visited[v] = true;
+    for (int i = 0; i < AdjList[v].size(); i++) {
+        ii u = AdjList[v][i];
+        if (dfs_num[u.first] == DFS_WHITE)
+            tarjanSCC(u.first);
+        if (visited[u.first]) // only update if it belongs to the current traversal.
+            dfs_low[v] = min(dfs_low[v], dfs_low[u.first]);
+    }
+    // if low == num, then the current node is the root of the current spanning tree.
+    // we pop up nodes with guarantee that no nodes holds a reference ealier than the dfs_num[v] (if so, dfs_low[v] would be smaller than dfs_num[v])
+    if (dfs_low[v] == dfs_num[v]) {
+        printf("SCC %d:", ++numSCC);
+        while (1) {
+            int u = s.back();
+            s.pop_back();
+            visited[u] = false; // clear visit state for possibly repetitive visit
+            printf(" %d", u);
+            if (u == v) break;
+        }
+        printf("\n");
+    }
+}
 
 int main() {
     int V, total_neighbors, id, weight;
@@ -142,6 +171,13 @@ int main() {
     for (int i = 0; i < V; i++)
         if (articulationPoint[i])
             printf(" Vertex %d\n", i);
+
+    printf("Strongly Connected Components (the input graph must be DIRECTED)\n");
+    dfs_low.assign(V, 0); dfs_num.assign(V, DFS_WHITE); visited.assign(V, false);
+    dfs_counter = numSCC = 0;
+    for (int v = 0; v < V; v++)
+        if (dfs_num[v] == DFS_WHITE)
+            tarjanSCC(v);
 
     return 0;
 }
