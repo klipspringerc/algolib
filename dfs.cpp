@@ -80,7 +80,9 @@ void articulationPointAndBridge(int v) {
             dfs_low[v] = min(dfs_low[v], dfs_low[u.first]); // for new vertices, we propagate the dfs_low value
         } else {
             if (dfs_parent[v] != u.first)
-                dfs_low[v] = min(dfs_low[v], dfs_num[u.first]); // take the lower between low and num to reflect the actual lowest level
+                // note here we take the lower between low and num to reflect the actual lowest level of the current CC
+                // so the value would not be affected by the lowest level of other CC the vertex u connects to
+                dfs_low[v] = min(dfs_low[v], dfs_num[u.first]);
         }
     }
 }
@@ -90,7 +92,7 @@ void articulationPointAndBridge(int v) {
 
 int main() {
     int V, total_neighbors, id, weight;
-    freopen("/Users/cuisp/CLionProjects/algolib/CP3/ch4/in_01.txt", "r", stdin);
+    freopen("./CP3/ch4/in_01.txt", "r", stdin);
     scanf("%d", &V);
     AdjList.assign(V, vii());
     for (int i = 0; i < V; i++) {
