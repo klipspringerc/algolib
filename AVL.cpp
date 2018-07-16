@@ -114,12 +114,8 @@ Node * delete_node(Node * node, int key) {
             node = node->right;
         } else {
             Node * replace = min_value_node(node->right);
-            Node * curl = node->left;
-            Node * curr = node->right;
-            free(node);
-            node = replace;
-            node->right = delete_node(curr, node->key);
-            node->left = curl;
+            node->key = replace->key;
+            node->right = delete_node(node->right, node->key);
         }
     }
     if (node == nullptr)
@@ -186,7 +182,7 @@ int main() {
     root = insert(root, 6);
     root = insert(root, 2);
     print_tree(root);
-    root = delete_node(root, 6);
+    root = delete_node(root, 10);
     print_tree(root);
 //    cout << root->left->key << endl;
     return 0;

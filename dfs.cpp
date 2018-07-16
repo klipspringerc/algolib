@@ -93,6 +93,13 @@ void articulationPointAndBridge(int v) {
 vector<bool> visited;
 vi s; // auxiliary stack
 int numSCC;
+
+// Tarjan algorithm finds SCCs in linear time
+// dfs with a stack to track current component,
+// each call would return when v has a path to an earlier vertex, otherwise a component would be popped from stack
+// the search result is a forest of spanning trees
+// Any vertex of a spanning tree component can be the root if it happens to be the first node of the component that is discovered by the search
+
 void tarjanSCC(int v) {
     dfs_low[v] = dfs_num[v] = dfs_counter++;
     s.push_back(v);
@@ -106,6 +113,7 @@ void tarjanSCC(int v) {
     }
     // if low == num, then the current node is the root of the current spanning tree.
     // we pop up nodes with guarantee that no nodes holds a reference ealier than the dfs_num[v] (if so, dfs_low[v] would be smaller than dfs_num[v])
+    // pop the stack until reach the root node v
     if (dfs_low[v] == dfs_num[v]) {
         printf("SCC %d:", ++numSCC);
         while (1) {

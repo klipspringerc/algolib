@@ -21,10 +21,35 @@ void reconstruct_print(int end, int a[], int p[]) {
     printf("\n");
 }
 
+
+void lis(int A[], int n) {
+    int lis = 0, lis_end = 0;
+    int P[MAX_N], L[MAX_N], L_id[MAX_N];
+    for (int i = 0 ; i < n; i++) {
+        int pos = lower_bound(L, L+lis, A[i]) - L;
+        L[pos] = A[i];
+        P[i] = pos? L_id[pos-1] : -1;
+        L_id[pos] = i;
+        if (pos + 1 > lis) {
+            lis = pos+1;
+            lis_end = i;
+        }
+    }
+    // print array
+    stack<int> s;
+    int x = lis_end;
+    for (; x >= 0; x = P[x]) s.push(A[x]);
+    printf("LIS (length %d): ", lis);
+    for (; !s.empty(); s.pop()) printf("%d ", s.top());
+    printf("\n");
+}
+
+
 int main() {
     // LIS
     int n = 11;
     int a[] = {-7, 10,1, 9, 3, 8, 8, 1, 2, 3, 4};
+    lis(a, n);
     int P[MAX_N]; // track the original index of the previous element in an increasing subsequence
     int L[MAX_N]; // aux array to place sub sequence
     int L_Pos[MAX_N]; // translate L index to original array index.

@@ -1,12 +1,13 @@
 #include <iostream>
 #include <bitset>
+#include <algorithm>
 using namespace std;
 
 void get_size(int arr[]) {
     cout << sizeof(arr) << endl;
 }
 
-int main() {
+void test_sizeof() {
     char carr[100];
     int iarr[100];
     int * piarr = (int *) malloc(sizeof(int) * 100);
@@ -31,5 +32,18 @@ int main() {
     cout << bs << endl;
     cout << bs.count() << endl;
     cout << bs.any() << endl;
+}
+
+void test_lower_bound() {
+    long a[10] = {1,2,4,6,8,13,21,31,32,44};
+//    long a[10] = {};
+    int idx = lower_bound(a, a+0, 13) - a;
+    cout << idx << endl;
+
+}
+
+int main() {
+    test_lower_bound();
+
     return 0;
 }
