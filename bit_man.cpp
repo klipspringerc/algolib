@@ -34,11 +34,20 @@ void printSet(int bs) {
     printf("\n");
 }
 
+void build_in_bit_methods() {
+    printf("count bit 30, %d \n", __builtin_popcount(30));
+    printf("count bit 32, %d \n", __builtin_popcount(32));
+    printf("trailing zero 30, %d \n", __builtin_ctz(30));
+    printf("trailing zero 32, %d \n", __builtin_ctz(32));
+
+}
+
 int main() {
     int n = 7;
     printSet(n);
     printf("lowbit of %d: %d \n", n, lowBit(n));
     printSet(n);
     printSet(turnOnLastZero(n));
+    build_in_bit_methods();
     return 0;
 }

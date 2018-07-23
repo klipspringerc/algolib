@@ -1,4 +1,9 @@
 //
+// Knuth–Morris–Pratt algorithm for string pattern matching
+// The algorithm would remember the already matched portion of the pattern
+// therefore would NOT always restart matching from the start of pattern
+// useful for patterns containing many recurring prefix patterns
+// O(n + m):  matching O(n) + pre-processing O(m)
 // Created by Cui Shengping on 9/4/18.
 //
 
@@ -43,5 +48,17 @@ int main() {
     m = (int)strlen(P);
     printf("%d \n", m);
     kmpPreprocess();
+    printf("after pre-processing, back-off array: ");
+    for (int i = 0; i < m; i++)
+        printf("%d ", b[i]);
+    printf("\n");
     kmpSearch();
+
+    // for illustration of pre-processing
+    strcpy(P,"ETETETW");
+    memset(b, 0, MAX_N);
+    kmpPreprocess();
+    printf("after pre-processing, back-off array: ");
+    for (int i = 0; i < 8; i++)
+        printf("%d ", b[i]);
 }

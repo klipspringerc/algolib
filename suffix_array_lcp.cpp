@@ -1,4 +1,6 @@
 //
+// check CP3 269~280 for more details
+// LCP Longest Common Prefix array, LCP[i]: length of common prefix between SA[i] & SA[i-1]
 // Created by Cui Shengping on 9/4/18.
 //
 
@@ -113,13 +115,37 @@ ii stringMatching() {
     return range;
 }
 
+void getLCP() {
+    int i, l=0;
+    pre[SA[0]] = -1;
+    for (i = 1; i < n; i++)
+        pre[SA[i]] = SA[i-1];
+    for (i = 0; i < n; i++) {
+        if (pre[i] == -1) {
+            PLCP[i] = 0;
+            continue;
+        }
+        while (T[i+l] == T[pre[i]+l]) l++;
+        PLCP[i] = l;
+        l = max(l-1, 0);
+    }
+    for (i = 0; i < n; i++)
+        LCP[i] = PLCP[SA[i]];
+
+}
+
 // compute permuted LCP array in O(n)
+// By looping in original suffix order (instead of the sorted one),
+// we have the guarantee that the next LCP would be at least LCP[previous]-1
 // SA shall be sorted
+// PLCP: LCP array in original order (Permuted LCP array)
+// LCP: LCP array in sorted suffix array order
 void computeLCP() {
     int i, l;
     pre[SA[0]] = -1;
     for (i = 1; i < n; i++)
-        pre[SA[i]] = SA[i-1];
+        pre[SA[i]] = SA[i-1]; // remember the sorted order by a previous array
+    // loop in original suffix order
     for (i = l = 0; i < n; i++) {
         if (pre[i] == -1) {
             PLCP[i] = 0;
@@ -195,14 +221,16 @@ int main() {
     strcpy(T, "GATAGCATGACATGCAGGATC");
     n = (int) strlen(T);
     T[n++] = '$';
-    strcpy(P, "AT");
+    strcpy(P, "GAT");
     m = (int) strlen(P);
     constructSA();
+//    buildSA();
     printSA();
     ii range = stringMatching();
     for (int i = range.first; i <= range.second; i++)
         printf("string match '%s' at position %d-%d\n", P, SA[i], SA[i]+m);
-    computeLCP();
+//    computeLCP();
+    getLCP();
     printSALCP();
 
     // longest recurring substring

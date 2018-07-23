@@ -48,7 +48,7 @@ void countingSort(int k) {                                          // O(n)
 // this is because some index position has already been sorted (index n of a suffix is just another suffix)
 // say there are GTAC... and GTAB..., the k = 3 is not checked because their corresponding ranks are
 // reflected by ranks of suffix AC... and AB... so the correct order has been derived when k = 2
-// each iteration step is aiming to differientiate suffices with the same rank,
+// each iteration step is aiming to differentiate suffices with the same rank,
 // iteration ends when each suffix is at its own rank
 void constructSA() {         // this version can go up to 100000 characters
   int i, k, r;
@@ -74,7 +74,7 @@ void computeLCP_slow() {
     LCP[i] = L;
 } }
 
-// the oprimisation is basing on the idea that:
+// the optimisation is based on the idea that:
 // We go from longest suffices to one shorter and shorter
 // if one SA and the one before share the same prefix of length L,
 // then each one of them minus their first char, would be another pair of suffices,

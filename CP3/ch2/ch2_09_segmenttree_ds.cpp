@@ -1,3 +1,5 @@
+// range minimum query (RMQ), segment tree
+
 #include <cmath>
 #include <cstdio>
 #include <vector>
