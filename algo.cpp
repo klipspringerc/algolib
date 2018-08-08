@@ -5,6 +5,8 @@
 #include <cstdio>
 #include <cmath>
 #include <algorithm>
+#include <vector>
+#include <queue>
 using namespace std;
 
 #define nearestPowerOfTwo(S) ((int)pow(2.0, (int)((log((double)S) / log(2.0)) + 0.5)))
@@ -21,6 +23,10 @@ void test_lower_bound() {
     printf("%ld\n", (upper_bound(arr, arr+4, 5, comp)-arr)); // first larger than
     printf("%ld\n", (upper_bound(arr, arr+4, -1, comp)-arr)); // this would go return last
 }
+
+struct cmp
+{bool operator()(int a,int b) { return  a > b; }
+};
 
 void test_sort() {
     int arr[] = {6,4,2,3};
@@ -39,10 +45,28 @@ void test_pow_2() {
     }
 }
 
+void test_vector() {
+    vector<int> tv(20);
+    tv[10] = 33;
+    for (auto &e: tv) {
+        printf("%d ", e);
+    }
+    printf("\n");
+}
 
+void test_pq() {
+    priority_queue<int, vector<int>, cmp> pq;
+    pq.push(13);
+    pq.push(2);
+    printf("top : %d\n", pq.top());
+
+
+}
 int main() {
 //    test_sort();
-    test_pow_2();
+//    test_pow_2();
+//    test_vector();
+    test_pq();
 //    test_lower_bound();
 }
 
