@@ -60,17 +60,18 @@ void graphCheck(int v) {
 // If the bridge edge is removed, the CC would be broken to 2 CCs
 
 int dfs_counter; // track the number of vertices examined and initialize the level
-vi dfs_low; // track the lowest level each vertex connected to
+vi dfs_low; // dfs_low[u] stores the lowest dfs_num reachable from the current spanning subtree of u
 vector<bool> articulationPoint; // whether the vertex is an AP
 int dfs_root, rootChildren;
 
+// notice this is used on UNDIRECTED graph
 void articulationPointAndBridge(int v) {
     dfs_low[v] = dfs_num[v] = dfs_counter++; // initialize level info
     for (int i = 0; i < AdjList[v].size(); i++) {
         ii u = AdjList[v][i];
         if (dfs_num[u.first] == DFS_WHITE) {
             dfs_parent[u.first] = v;
-            if (v == dfs_root) rootChildren++; // If no. of rootChildren > 1, root is AP
+            if (v == dfs_root) rootChildren++; // by definition, a vertex cannot be an AP if its degree is 1
             articulationPointAndBridge(u.first);
             if (dfs_low[u.first] >= dfs_num[v]) {
                 articulationPoint[v] = true;
@@ -97,8 +98,7 @@ int numSCC;
 // Tarjan algorithm finds SCCs in linear time
 // dfs with a stack to track current component,
 // each call would return when v has a path to an earlier vertex, otherwise a component would be popped from stack
-// the search result is a forest of spanning trees
-// Any vertex of a spanning tree component can be the root if it happens to be the first node of the component that is discovered by the search
+// notice that SCC means cycles, since every (v,u) pair has paths to each other
 
 void tarjanSCC(int v) {
     dfs_low[v] = dfs_num[v] = dfs_counter++;
@@ -111,15 +111,15 @@ void tarjanSCC(int v) {
         if (visited[u.first]) // only update if it belongs to the current traversal.
             dfs_low[v] = min(dfs_low[v], dfs_low[u.first]);
     }
-    // if low == num, then the current node is the root of the current spanning tree.
-    // we pop up nodes with guarantee that no nodes holds a reference ealier than the dfs_num[v] (if so, dfs_low[v] would be smaller than dfs_num[v])
-    // pop the stack until reach the root node v
+    // In below part, the current SCC on the stack is removed
+    // dfs_low == dfs_num means that no vertices in the sub-tree rooted at v can reach any vertices higher than v
+    // also every vertices currently on the stack (after v) is in a cycle back to v, therefore by definition, these vertices on the stack is a SCC
     if (dfs_low[v] == dfs_num[v]) {
         printf("SCC %d:", ++numSCC);
         while (1) {
             int u = s.back();
             s.pop_back();
-            visited[u] = false; // clear visit state for possibly repetitive visit
+            visited[u] = false; // set unvisited so its dfs_low value would not be used in future dfs_low update when the vertex is reached again, since clearly there would be no cycle back from this vertex
             printf(" %d", u);
             if (u == v) break;
         }

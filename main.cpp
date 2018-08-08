@@ -86,17 +86,27 @@ void test_char() {
     printf("char max %d\n", CHAR_MAX);
 }
 
+void test_cstring() {
+    char as[100] = "abcd" ;
+    as[2] = '\0';
+    char bs[20] = "efg";
+    strcat(as, bs);
+    puts("string concatenation result");
+    puts(as);
+}
+
 int main() {
 //    test_lower_bound();
 //    test_sizeof();
 //    test_bitset();
 //    test_print_str();
 //    test_gets();
-    test_char();
-    if (is_big_endian()) {
-        printf("big endian\n");
-    } else {
-        printf("little endian\n");
-    }
+//    test_char();
+//    if (is_big_endian()) {
+//        printf("big endian\n");
+//    } else {
+//        printf("little endian\n");
+//    }
+    test_cstring();
     return 0;
 }
