@@ -9,6 +9,9 @@
 #include <queue>
 using namespace std;
 
+typedef pair<int, int> ii;
+typedef pair<int, ii> pii;
+
 #define nearestPowerOfTwo(S) ((int)pow(2.0, (int)((log((double)S) / log(2.0)) + 0.5)))
 
 bool comp(int a, int b) {
@@ -30,8 +33,8 @@ struct cmp
 
 void test_sort() {
     int arr[] = {6,4,2,3};
-//    sort(arr+1, arr+4, comp);
-    stable_sort(arr+1, arr+4, comp);
+    sort(arr, arr+4, comp);
+//    stable_sort(arr+1, arr+4, comp);
     for (int i = 0; i < 4; i++)
         printf("%d ", arr[i]);
 }
@@ -46,12 +49,56 @@ void test_pow_2() {
 }
 
 void test_vector() {
-    vector<int> tv(20);
-    tv[10] = 33;
-    for (auto &e: tv) {
-        printf("%d ", e);
-    }
+//    vector<int> tv(20);
+//    tv[10] = 33;
+//    for (auto &e: tv) {
+//        printf("%d ", e);
+//    }
+//    printf("\n");
+
+//    vector<pii> ts;
+//    ts.push_back(pii(13, ii(2,1)));
+//    ts.push_back(pii(4, ii(5,9)));
+//    sort(ts.begin(), ts.begin()+2);
+//    printf("%d %d \n", ts[0].first, ts[1].first);
+
+//    vector<vector<int>> tvv;
+//    tvv.assign(3,vector<int>());
+//    tvv[0].push_back(13);
+//    tvv[0].push_back(14);
+//    tvv[1].push_back(3);
+//    tvv[1].push_back(2);
+//    tvv[2].push_back(23);
+//    tvv[2].push_back(19);
+//    tvv.clear();
+//    printf("%d ", tvv[0][0]);
+//    printf("size %d \n", tvv[0].size());
+//    tvv.push_back(vector<int>());
+//    tvv[0].push_back(15);
+//    printf("%d ", tvv[0][1]);
+//    printf("size %d \n", tvv[0].size());
+//
+    vector<ii> tii;
+    tii.push_back(ii(1,3));
+    tii.push_back(ii(2,4));
+    for (auto &p: tii)
+        printf("%d ", p.first);
     printf("\n");
+    printf("\n");
+    tii.clear();
+    printf("%d\n", tii[0].first);
+    printf("%d\n", tii[1].second);
+    for (auto &p: tii)
+        printf("%d ", p.first);
+    printf("\n");
+    tii.push_back(ii(5,2));
+    printf("%d\n", tii[0].first);
+    printf("%d\n", tii[1].second);
+    for (auto &p: tii)
+        printf("%d ", p.first);
+    printf("\n");
+
+
 }
 
 void test_pq() {
@@ -59,9 +106,9 @@ void test_pq() {
     pq.push(13);
     pq.push(2);
     printf("top : %d\n", pq.top());
-
-
 }
+
+
 int main() {
 //    test_sort();
 //    test_pow_2();
