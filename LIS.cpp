@@ -48,7 +48,7 @@ void lis(int A[], int n) {
 int main() {
     // LIS
     int n = 11;
-    int a[] = {-7, 10,1, 9, 3, 8, 8, 1, 2, 3, 4};
+    int a[] = {-7, 10, 1, 9, 3, 8, 8, 1, 2, 2, 3, 4};
     lis(a, n);
     int P[MAX_N]; // track the original index of the previous element in an increasing subsequence
     int L[MAX_N]; // aux array to place sub sequence
@@ -66,6 +66,7 @@ int main() {
             lis_end = i;
         }
     }
+
     printf("Longest Increasing Subsequence: \n");
     reconstruct_print(lis_end, a, P);
     return 0;

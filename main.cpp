@@ -62,9 +62,17 @@ void test_lower_bound() {
 
 void test_gets() {
     char str[20];
+//    while (gets(str) != NULL) {
+//        int str_len = strlen(str);
+//        printf("input length: %d last char %c \n", str_len, str[str_len - 1]);
+//    }
     while (gets(str) != NULL) {
-        int str_len = strlen(str);
-        printf("input length: %d last char %c \n", str_len, str[str_len - 1]);
+        while (strlen(str)) {
+            puts("receive line");
+            if (gets(str) == NULL)
+                break;
+        }
+        puts("process");
     }
 }
 
@@ -100,13 +108,13 @@ int main() {
 //    test_sizeof();
 //    test_bitset();
 //    test_print_str();
-//    test_gets();
+    test_gets();
 //    test_char();
 //    if (is_big_endian()) {
 //        printf("big endian\n");
 //    } else {
 //        printf("little endian\n");
 //    }
-    test_cstring();
+//    test_cstring();
     return 0;
 }

@@ -18,13 +18,26 @@ bool comp(int a, int b) {
     return a <= b;
 }
 
+bool comp_lower(int a, int b) {
+    return a > b;
+}
 void test_lower_bound() {
     int arr[] = {1,3,5,9,10};
-//    int arr[] = {10, 9, 5, 3,1};
+
+    int arr_r[] = {10, 9, 5, 3,1};
     sort(arr, arr+5, comp);
-    printf("%ld\n", (lower_bound(arr, arr+4, 5, comp)-arr)); // first no larger than
-    printf("%ld\n", (upper_bound(arr, arr+4, 5, comp)-arr)); // first larger than
-    printf("%ld\n", (upper_bound(arr, arr+4, -1, comp)-arr)); // this would go return last
+    puts("compare lower_bound & upper_bound with <=");
+    printf("%ld\n", (lower_bound(arr, arr+5, 5, comp)-arr)); // first no larger than
+    printf("%ld\n", (upper_bound(arr, arr+5, 5, comp)-arr)); // first larger than
+    puts("compare lower_bound & upper_bound with default comp");
+    printf("%ld\n", (lower_bound(arr, arr+5, 5)-arr)); // first no larger than
+    printf("%ld\n", (upper_bound(arr, arr+5, 5)-arr)); // first larger than
+    puts("compare lower_bound & upper_bound with >");
+    printf("%ld\n", (lower_bound(arr_r, arr_r+5, 5, comp_lower)-arr_r)); // this would go return last
+    printf("%ld\n", (upper_bound(arr_r, arr_r+5, 5, comp_lower)-arr_r)); // this would go return last
+    puts("compare lower_bound & upper_bound with range zero");
+    printf("%ld\n", (lower_bound(arr, arr+0, 1)-arr)); // first no larger than
+    printf("%ld\n", (upper_bound(arr, arr+0, 1)-arr)); // first larger than
 }
 
 struct cmp
@@ -113,8 +126,8 @@ int main() {
 //    test_sort();
 //    test_pow_2();
 //    test_vector();
-    test_pq();
-//    test_lower_bound();
+//    test_pq();
+    test_lower_bound();
 }
 
 

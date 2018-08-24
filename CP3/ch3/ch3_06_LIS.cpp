@@ -30,12 +30,12 @@ void reconstruct_print(int end, int a[], int p[]) {
 }
 
 int main() {
-  int n = 11, A[] = {-7, 10, 9, 2, 3, 8, 8, 1, 2, 3, 4};
+  int n = 12, A[] = {-7, 10, 9, 2, 3, 8, 8, 1, 2, 2, 3, 4};
   int L[MAX_N], L_id[MAX_N], P[MAX_N];
 
   int lis = 0, lis_end = 0;
   for (int i = 0; i < n; ++i) {
-    int pos = lower_bound(L, L + lis, A[i]) - L; // find the position to insert the current element
+    int pos = upper_bound(L, L + lis, A[i]) - L; // find the position to insert the current element
     L[pos] = A[i];
     L_id[pos] = i;
     P[i] = pos ? L_id[pos - 1] : -1; // update the index to the previous element, -1 marks the start of subsequence
