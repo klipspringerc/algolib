@@ -17,7 +17,7 @@
 #define turnOffLastBit(S) ((S) & (S - 1))
 #define turnOnLastZero(S) ((S) | (S + 1))
 #define turnOffLastConsecutiveBits(S) ((S) & (S + 1))
-#define turnOnLastConsecutiveZeroes(S) ((S) | (S - 1))
+#define twurnOnLastConsecutiveZeroes(S) ((S) | (S - 1))
 
 using namespace std;
 

@@ -8,6 +8,7 @@
 
 #include <cstdlib>
 #include <vector>
+#include <cstring>
 using namespace std;
 
 typedef vector<int> vi;
@@ -37,6 +38,34 @@ public:
     }
 
 };
+
+
+// Fenwick tree for zero-indexed scheme
+struct ZeroFenwickTree {
+
+private:
+    vi ft;
+
+public:
+
+    void adjust(int i, int v) {
+        for (; i < ft.size(); i |= i-1)
+            ft[i] += v;
+    }
+
+    int rsq(int r) {
+        int sum = 0;
+        for (; r > 0; r = (r & (r+1)) -1)
+            sum += ft[r];
+        return sum;
+    }
+
+    int rsq(int l, int r) {
+        return (l == 0)? rsq(r) : rsq(r) - rsq(l);
+    }
+};
+
+
 
 int main() {
     FenwickTree ft(10);

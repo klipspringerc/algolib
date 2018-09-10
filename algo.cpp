@@ -121,13 +121,21 @@ void test_pq() {
     printf("top : %d\n", pq.top());
 }
 
+void test_zero_bi(int val, int n) {
+    for (; val < n; val |= val+1)
+        printf("%d ", val);
+    puts("");
+}
 
 int main() {
 //    test_sort();
 //    test_pow_2();
 //    test_vector();
 //    test_pq();
-    test_lower_bound();
+//    test_lower_bound();
+    test_zero_bi(6,50);
+    test_zero_bi(5,50);
+    test_zero_bi(4,50);
 }
 
 
