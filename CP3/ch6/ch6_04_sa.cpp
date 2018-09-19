@@ -189,12 +189,15 @@ int main() {
   n = (int)strlen(T);                                           // update n
 
   // reconstruct SA of the combined strings
+  char target[MAX_N];
   constructSA();                                              // O(n log n)
   computeLCP();                                                     // O(n)
   printf("\nThe LCP information of 'T+P' = '%s':\n", T);
   printf("i\tSA[i]\tLCP[i]\tOwner\tSuffix\n");
-  for (int i = 0; i < n; i++)
+  for (int i = 0; i < n; i++) {
     printf("%2d\t%2d\t%2d\t%2d\t%s\n", i, SA[i], LCP[i], owner(SA[i]), T + SA[i]);
+
+  }
 
   ans = LCS();         // find the longest common substring between T and P
   char lcsans[MAX_N];

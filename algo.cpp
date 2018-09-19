@@ -127,15 +127,26 @@ void test_zero_bi(int val, int n) {
     puts("");
 }
 
+void test_log() {
+    for ( int i = 0; i < 20; i++) {
+        printf("%d %d\n", i, (int)floor(log((double)i) / log(2.0)));
+    }
+    // (int)((log((double)S) / log(2.0)) + 0.5))
+    for ( int i = 0; i < 20; i++) {
+        printf("%d %d\n", i, (int)ceil(log((double)i) / log(2.0)));
+    }
+}
+
 int main() {
 //    test_sort();
 //    test_pow_2();
 //    test_vector();
 //    test_pq();
 //    test_lower_bound();
-    test_zero_bi(6,50);
-    test_zero_bi(5,50);
-    test_zero_bi(4,50);
+//    test_zero_bi(6,50);
+//    test_zero_bi(5,50);
+//    test_zero_bi(4,50);
+    test_log();
 }
 
 

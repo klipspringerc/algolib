@@ -126,7 +126,7 @@ private:
     }
     iii _get_all(int p, int l, int r, int ll, int rr) {
         if(r < ll || rr < l) {
-            return make_tuple(0, 0, 0, 0);
+            return make_tuple(0LL, 0LL, 0LL, 0LL);
         }
         if(ll <= l && r <= rr) {
             return make_tuple(pl[p], pr[p], all[p], tot[p]);
