@@ -7,6 +7,9 @@
 #include <algorithm>
 #include <vector>
 #include <queue>
+#include <random>
+#include <string>
+#include <map>
 using namespace std;
 
 typedef pair<int, int> ii;
@@ -137,6 +140,108 @@ void test_log() {
     }
 }
 
+void test_arr_pointer() {
+    int a[10] = {1,2,3,4,5,6,7,8,9,10};
+    int as[5] = {1,2,3,4,5};
+    int * b = a + 5;
+    int (*c) [5]; // pointer to an array of 5 integers
+    for (int i = 0; i < 4; i++)
+        printf("%d ", b[i]);
+    puts("");
+    c = &as; // c = &a would be an error type mismatch
+    for (int i = 0; i < 5; i++)
+        printf("%d ", (*c)[i]);
+    puts("");
+}
+
+
+void test_rand() {
+    double m;
+    srand(1); // set seed
+    puts("simple rand");
+    for (int i = 0; i < 10; i++) {
+        m = (double)rand() / RAND_MAX;
+        printf("%lf\n", m);
+    }
+    printf("random max %d\n", RAND_MAX);
+
+    puts("uniform rand");
+    double lower_bound = 0;
+    double upper_bound = 1;
+    std::uniform_real_distribution<double> unif(lower_bound,upper_bound);
+    std::default_random_engine re;
+//    double a_random_double = unif(re);
+    for (int i = 0; i < 10; i++) {
+        m = unif(re);
+        printf("%lf\n", m);
+    }
+    puts("");
+}
+
+int my_sum(int a, int b) { return a+b; }
+
+void test_function_pointer() {
+    int (*fp[4]) (int, int);
+    fp[0] = &my_sum;
+    printf("my sum %d \n", (*fp[0])(21,31));
+}
+
+
+void assoc() {
+    int a = 2;
+    int b = 3;
+    int result = a+++b; // (a++) + b
+    printf("result %d and a %d  b %d\n", result, a, b);
+}
+
+void precision() {
+    float af = 2.33e15;
+    float bf = 1.0f + af;
+    printf("bf - af %f\n", bf-af);
+
+}
+
+void integral_promotions() {
+    unsigned long long al = 1e12;
+    unsigned int aui = 1 << 31;
+    int ai = 1 << 31;
+    printf("%lld\n", al + aui);
+    printf("%lld\n", al + ai);
+}
+
+void read_dates() {
+    char days[10];
+    int h1,h2;
+    int m1, m2;
+    int c = scanf("%s %d:%d-%d:%d", days, &h1, &m1, &h2,&m2);
+    puts(days);
+    printf("%d %d %d %d\n", h1, m1, h2, m2);
+    printf("%d\n", strcmp("Tues", days));
+    printf("%d\n", c);
+}
+
+void split_parse(string &S) {
+    int pos_ws, pos_dot;
+    int next_nl;
+    int pos = 0;
+    int len = S.length();
+    pos_ws = S.find(" ");
+    pos_dot = S.rfind(".");
+    printf("ext: %s\n", S.substr(pos_dot+1, pos_ws-pos_dot-1).c_str());
+    printf("size: %d\n", stoi(S.substr(pos_ws+1, len-pos_ws-2)));
+
+}
+
+void test_map() {
+    map<string, int> mapper;
+    mapper["mp3"] = 0;
+    mapper["aac"] = 0;
+    mapper["flac"] = 0;
+    printf("%d\n", mapper["aac"]);
+    printf("%d\n", mapper["bbc"]);
+
+}
+
 int main() {
 //    test_sort();
 //    test_pow_2();
@@ -146,7 +251,19 @@ int main() {
 //    test_zero_bi(6,50);
 //    test_zero_bi(5,50);
 //    test_zero_bi(4,50);
-    test_log();
+//    test_log();
+//    test_arr_pointer();
+//    test_rand();
+//    test_function_pointer();
+//    runt();
+//    assoc();
+//    precision();
+//    integral_promotions();
+//    read_dates();
+    test_map();
+//    string st = "greatSong.flac 1000b";
+//    split_parse(st);
+
 }
 
 

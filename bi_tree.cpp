@@ -29,7 +29,7 @@ public:
     }
 
     int rsq(int l, int r) {
-        return rsq(r) - (l == 1 ? 0 : rsq(l));
+        return rsq(r) - (l == 0 ? 0 : rsq(l));
     }
 
     // adjuest the value of i by v
@@ -73,7 +73,9 @@ int main() {
     ft.adjust(3,7);
     printf("%d\n", ft.rsq(1, 10));
     printf("%d\n", ft.rsq(2));
+    printf("%d\n", ft.rsq(1,3));
+    ft.adjust(2,2);
     ft.adjust(1,4);
-    printf("%d\n", ft.rsq(1, 10));
+    printf("%d\n", ft.rsq(0, 3));
     printf("%d\n", ft.rsq(1));
 }

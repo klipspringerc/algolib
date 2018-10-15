@@ -13,7 +13,7 @@ using namespace std;
 // rd: bitmask for occupied right diagonal
 
 int n, sol_count, ok, no = 0;
-int bad[31];
+int bad[16];
 
 void queen_backtrack(int c, int row, int ld, int rd) {
     if (c == n)
@@ -31,7 +31,7 @@ void queen_backtrack(int c, int row, int ld, int rd) {
 
 int main() {
 
-    char row[31];
+    char row[16];
     while(true) {
         scanf("%d", &n);
         if (!n)
