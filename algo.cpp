@@ -10,6 +10,7 @@
 #include <random>
 #include <string>
 #include <map>
+#include <set>
 using namespace std;
 
 typedef pair<int, int> ii;
@@ -242,6 +243,40 @@ void test_map() {
 
 }
 
+void test_set() {
+    set<int, greater<int>> s;
+    s.insert(7);
+    s.insert(133);
+    s.insert(24);
+    s.insert(256);
+    s.insert(99);
+    // check all members
+    for (set<int>::iterator it = s.begin(); it != s.end(); it++)
+        printf("%d ", *it);
+    puts("");
+    // iterate with range
+    for (set<int>::iterator it = s.begin(); it != s.lower_bound(55); it++)
+        printf("%d ", *it);
+    puts("");
+
+    // check exist
+    printf("find 33 %d \n", (s.find(33) == s.end()));
+    printf("find 133 %d \n", *s.find(133));
+
+}
+
+void test_string() {
+    string ts = "teststring";
+    string tb = "teststring";
+    string tc = "aeststring";
+    printf("compare same literal %d\n", (ts == tb));
+    tc[0] = 't';
+    printf("compare string %d\n", (ts == tc));
+    printf("char 3 equal t :%d\n", (ts[3] == 't'));
+    ts[5] = 'a'; // string is mutable
+    printf("%s\n", ts.c_str());
+}
+
 int main() {
 //    test_sort();
 //    test_pow_2();
@@ -260,9 +295,11 @@ int main() {
 //    precision();
 //    integral_promotions();
 //    read_dates();
-    test_map();
+//    test_map();
 //    string st = "greatSong.flac 1000b";
 //    split_parse(st);
+//    test_string();
+//    test_set();
 
 }
 
