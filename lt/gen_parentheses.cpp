@@ -1,5 +1,5 @@
 //
-// Created by SG0014000445M on 2020/3/29.
+// Created by Cui Shengping on 2020/3/29.
 // https://leetcode.com/problems/generate-parentheses/
 //
 
