@@ -18,6 +18,11 @@ char P[MAX_N]; // pattern
 int b[MAX_N]; // back table
 int n, m; // length of T and P
 
+
+// in preprocess, it is all about identifying prefix that are also postfix
+// e.g. abcabx, in this case 'ab' is both a prefix and postfix, so when pattern matching failed at 'x' idx 5, it could return
+// to index 3 since the first 2 'ab' is a guaranteed match at this point.
+//
 void kmpPreprocess(){
     int i = 0, j = -1;
     b[0] = -1;
