@@ -20,6 +20,9 @@ int main() {
 
   v.push_back(5);                          // but vector will resize itself
   printf("v[5] = %d\n", v[5]);                                         // 5
-  
+  v.clear(); // clear content
   return 0;
 }
+
+// vectors need to be passed by reference if any modification would be performed.
+//
