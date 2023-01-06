@@ -67,8 +67,8 @@ public:
 
 int main() {
     Solution s;
-    vector<int> input = {1,1,2,2};
-    vector<vector<int>> results = s.permuteUnique(input);
+    vector<int> input = {1,2,3,4};
+    vector<vector<int>> results = s.permute(input);
     printf("results: ");
     for (int i = 0; i < results.size(); i++) {
         printf("\n  ");
