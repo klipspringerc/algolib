@@ -4,6 +4,9 @@
 
 #include <cstdio>
 #include <cstdlib>
+#include <iostream>
+#include <algorithm>
+#include <vector>
 using namespace std;
 
 class Solution {
@@ -58,11 +61,88 @@ public:
             arr[j] = tmp;
         }
     }
+
+    void solution3() {
+        int n = 4;
+        vector<int> v(n);
+        for (int i = 0; i < n; i++) {
+            v[i] = i;
+        }
+
+        do {
+            for (int i = 0; i < n; ++i) {
+                std::cout << v[i] << " ";
+            }
+            std::cout << "\n";
+        } while (std::next_permutation(v.begin(), v.end()));
+    }
+
+    // by permutation on a boolean array (size n, only r of them is true)
+    // we could obtain all combination of C_n_r by index selection on where bool element is true
+    // this returns all ordered combination output indices
+    void combination() {
+        int n, r;
+        std::cin >> n;
+        std::cin >> r;
+
+        vector<bool> v(n);
+        fill(v.begin(), v.begin() + r, true);
+
+        do {
+            for (int i = 0; i < n; ++i) {
+                if (v[i]) {
+                    std::cout << (i + 1) << " ";
+                }
+            }
+            std::cout << "\n";
+        } while (prev_permutation(v.begin(), v.end()));
+    }
+
+    void practice_combination() {
+        int r = 2;
+        vector<bool> v(10, false);
+        fill(v.begin(), v.begin()+r, true);
+        vector<int> selection(r);
+        int count = 0;
+        do {
+            int idx = 0;
+            for (int i = 0; i < v.size(); i++) {
+                if (v[i]) {
+                    selection[idx] = i;
+                    idx++;
+                }
+            }
+            for (int i = 0; i < r; i++)
+                printf("%d ", selection[i]);
+            printf("\n");
+            count++;
+        } while(prev_permutation(v.begin(), v.end()));
+        printf("\n total combination: %d\n", count);
+    }
+
+    void practice_permutation() {
+        int n = 4;
+        vector<int> v(n);
+        for (int i = 0; i < n; i++) {
+            v[i]= i;
+        }
+        int count = 0;
+        do {
+            for (int i = 0; i < n; i++) {
+                printf("%d ", v[i]);
+            }
+            printf("\n");
+            count++;
+        } while (next_permutation(v.begin(), v.end()));
+        printf("total permutation %d\n", count);
+    }
 };
 
 int main() {
     Solution s;
     char input[] = "abcdef"; // would not work if declare as char * input, seems that char array would not be initialized properly this way
 //    s.solution(input, 3);
-    s.solution2(input, 6);
+//    s.solution2(input, 6);
+//    s.combination();
+    s.practice_permutation();
 }
