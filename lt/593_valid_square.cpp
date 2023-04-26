@@ -4,6 +4,7 @@
 
 #include <vector>
 #include <cstdio>
+#include <unordered_map>
 #include <cmath>
 using namespace std;
 
@@ -44,6 +45,47 @@ public:
             return false;
         return true;
     }
+    bool solution2(vector<int>& p1, vector<int>& p2, vector<int>& p3, vector<int>& p4) {
+        vector<vector<int>> points = {p1,p2,p3,p4};
+        vector<bool> v(4, false);
+        fill(v.begin(), v.begin() +2, true);
+        unordered_map<int, int> dist_map;
+        do {
+            vector<int> s(2);
+            int idx = 0;
+            for (int i = 0; i < 4; i++) {
+                if (v[i])
+                    s[idx++] = i;
+            }
+            vector<int> & pa = points[s[0]];
+            vector<int> & pb = points[s[1]];
+            int dist = pow(pa[0] - pb[0],2) + pow(pa[1] - pb[1], 2);
+            dist_map[dist]++;
+        } while (prev_permutation(v.begin(), v.end()));
+        if (dist_map.size() != 2)
+            return false;
+        bool found4 = false, found2 = false;
+        int val4, val2;
+        for (const pair<int, int> & p : dist_map) {
+            printf("dist %d, freq %d\n", p.first, p.second);
+            if (p.second == 4) {
+                if (found4) {
+                    return false;
+                }
+                found4 = true;
+                val4 = p.first;
+            }
+            if (p.second == 2) {
+                if (found2) {
+                    return false;
+                }
+                found2 = true;
+                val2 = p.first;
+            }
+        }
+        return found2 && found4 && (val4 * 2 == val2);
+    }
+
 private:
     static bool compare2d(vector<int> p1, vector<int> p2) {
         if (p1[0]<p2[0])
@@ -59,8 +101,9 @@ private:
 int main() {
     Solution s;
     vector<int> p1 = {0,2};
-    vector<int> p2 = {3,0};
-    vector<int> p3 = {3,2};
+    vector<int> p2 = {2,0};
+    vector<int> p3 = {2,2};
     vector<int> p4 = {0,0};
-    printf("is valid: %s", s.validSquare(p1,p2,p3,p4)? "true" : "false");
+//    printf("is valid: %s", s.validSquare(p1,p2,p3,p4)? "true" : "false");
+    printf("is valid: %s", s.solution2(p1,p2,p3,p4)? "true" : "false");
 }
