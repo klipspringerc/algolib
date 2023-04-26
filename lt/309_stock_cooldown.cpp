@@ -32,6 +32,52 @@ public:
     }
     // now limit to max 2 transactions
     int maxProfit(vector<int>& prices) {
+        int n = prices.size();
+        vector<vector<vector<int>>> dp (n, vector<vector<int>>(2, vector<int>(3, 0)));
+        // dp[day][buy][remain]
+        dp[0][0][1] = 0-prices[0];
+        dp[0][1][2] = 0;
+        // impossible cases;
+        dp[0][0][0] = -10000;
+        dp[0][0][2] = -10000;
+        dp[0][1][0] = -10000;
+        dp[0][1][1] = -10000;
+        //
+        for (int i = 1; i < prices.size(); i++) {
+            dp[i][0][1] = max(dp[i-1][0][1], dp[i-1][1][2]-prices[i]);
+            dp[i][0][0] = max(dp[i-1][0][0], dp[i-1][1][1]-prices[i]);
+            dp[i][1][2] = dp[i-1][1][2];
+            dp[i][1][1] = max(dp[i-1][1][1], dp[i-1][0][1] + prices[i]);
+            dp[i][1][0] = max(dp[i-1][1][0], dp[i-1][0][0] + prices[i]);
+        }
+        return max(dp[n-1][1][1], max(dp[n-1][1][0], dp[n-1][1][2]));
+    }
+
+    int maxProfitSimp(vector<int>& prices) {
+        int n = prices.size();
+        vector<vector<int>> dp (n, vector<int>(3, 0));
+        // dp[day][remain_tx]
+        dp[0][2] = 0; // start with first day, 2 tx remaining
+        dp[0][1] = -10000;
+        dp[0][0] = -10000;
+        for (int i = 1; i < prices.size(); i++) {
+            dp[i][2] = dp[i-1][2];
+            int max1 = dp[i-1][1];
+            int max0 = dp[i-1][0];
+            for (int j = 0; j < i; j++) {
+                max1 = max(max1, dp[j][2] + prices[i] - prices[j]);
+                max0 = max(max0, dp[j][1] + prices[i] - prices[j]);
+            }
+            dp[i][1] = max1;
+            dp[i][0] = max0;
+        }
+        for (int i = 0; i < prices.size();i++)
+            printf("{%d %d %d}  ", dp[i][2], dp[i][1], dp[i][0]);
+        printf("\n");
+        return max(dp[n-1][0],max(dp[n-1][1],dp[n-1][2]));
+    }
+
+    int maxProfitGreedy(vector<int>& prices) {
         int one_max = -1;
         int sec_max = -1;
         int cur = 0;
@@ -55,6 +101,6 @@ public:
 
 int main() {
     Solution s;
-    vector<int> input = {1,2,3,2,10,4};
-    printf("result: %d \n", s.maxProfit(input));
+    vector<int> input = {1,2,3,0,4,0};
+    printf("result: %d \n", s.maxProfitSimp(input));
 }
