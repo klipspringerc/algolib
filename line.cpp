@@ -41,3 +41,21 @@ bool do_intersect(Point p1, Point q1, Point p2, Point q2) {
         return true;
     return o4 == 0 && on_segment_if_colinear(p2, q2, q1);
 }
+
+// ray method to test if point inside polygon
+int pnpoly(int nvert, float *vertx, float *verty, float testx, float testy)
+{
+    int i, j, c = 0;
+    for (i = 0, j = nvert-1; i < nvert; j = i++) {
+        // the first condition makes sure the y position of test point is between 2 endpoints of the edge
+        // if horizontal edge, then this condition would pass (count as one intersect)
+        // if test point falls on an endpoint, only the edge with upper endpoint overlap with test point would count as intersect.
+        // so it would not be count duplicated by 2 adjacent edge
+        if ( ((verty[i]>=testy) != (verty[j]>=testy)) &&
+             (testx < (vertx[j]-vertx[i]) / (verty[j]-verty[i]) * (testy-verty[i]) + vertx[i]) )
+            // the second condition test that the point is actually on the left of the edge
+            // if edge slopse is positive, higher test point y position would have more room on the right of vertx. Vise versa
+            c = !c;
+    }
+    return c;
+}

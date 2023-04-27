@@ -25,18 +25,29 @@ void find_pairs(long long s) {
         num2 = sum;
         i++;
     }
-    printf("count 8: %ld\n", dict.count(8ll));
-    printf("mark %lld, calculated until %lld, iteration count %lld \n", (long long)(1e18), num2,i);
-    for (long long int a = 1; a < s; a++) {
-        long long int b = s - a;
-        if (b < a) {
-            printf("end\n");
-            return;
-        }
-        if (dict.count(a) > 0 && dict.count(b) > 0) {
-            printf("found pair: %lld %lld\n", a, b);
+//    printf("count 8: %ld\n", dict.count(8ll));
+//    printf("mark %lld, calculated until %lld, iteration count %lld \n", (long long)(1e18), num2,i);
+    for (long long v : dict) {
+        printf("test value %lld\n", v);
+        if (v > s)
+            break;
+        long long int b = s - v;
+        if (v > b)
+            break;
+        if (dict.count(b) > 0) {
+            printf("found pair: %lld %lld\n", v, b);
         }
     }
+//    for (long long int a = 1; a < s; a++) {
+//        long long int b = s - a;
+//        if (b < a) {
+//            printf("end\n");
+//            return;
+//        }
+//        if (dict.count(a) > 0 && dict.count(b) > 0) {
+//            printf("found pair: %lld %lld\n", a, b);
+//        }
+//    }
 
 }
 
@@ -63,7 +74,7 @@ int main() {
 
     std::clock_t a = std::clock();
     clock_gettime(CLOCK_MONOTONIC, &start);
-    find_pairs(90);
+    find_pairs(7000);
     clock_gettime(CLOCK_MONOTONIC, &finish);
     sub_timespec(start, finish, &delta);
     std::clock_t b = std::clock();

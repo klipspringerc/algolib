@@ -53,54 +53,67 @@ public:
         return max(dp[n-1][1][1], max(dp[n-1][1][0], dp[n-1][1][2]));
     }
 
-    int maxProfitSimp(vector<int>& prices) {
-        int n = prices.size();
-        vector<vector<int>> dp (n, vector<int>(3, 0));
-        // dp[day][remain_tx]
-        dp[0][2] = 0; // start with first day, 2 tx remaining
-        dp[0][1] = -10000;
-        dp[0][0] = -10000;
+    // since last dp only relies on previous day output, so simplify to non dp.
+    int maxProfitDPS(vector<int>& prices) {
+        int dpBuy1 = 0-prices[0];
+        int dpNohold2 = 0;
+        // impossible cases;
+        int dpBuy0 = -10000;
+        int dpNohold0 = -10000;
+        int dpNohold1 = -10000;
+        //
         for (int i = 1; i < prices.size(); i++) {
-            dp[i][2] = dp[i-1][2];
-            int max1 = dp[i-1][1];
-            int max0 = dp[i-1][0];
-            for (int j = 0; j < i; j++) {
-                max1 = max(max1, dp[j][2] + prices[i] - prices[j]);
-                max0 = max(max0, dp[j][1] + prices[i] - prices[j]);
-            }
-            dp[i][1] = max1;
-            dp[i][0] = max0;
+            int newBuy1 = max(dpBuy1, dpNohold2-prices[i]);
+            int newBuy0 = max(dpBuy0, dpNohold1-prices[i]);
+            dpNohold1 = max(dpNohold1, dpBuy1 + prices[i]);
+            dpNohold0 = max(dpNohold0, dpBuy0 + prices[i]);
+            dpBuy1 = newBuy1, dpBuy0 = newBuy0;
         }
-        for (int i = 0; i < prices.size();i++)
-            printf("{%d %d %d}  ", dp[i][2], dp[i][1], dp[i][0]);
-        printf("\n");
-        return max(dp[n-1][0],max(dp[n-1][1],dp[n-1][2]));
+        return max(dpNohold2, max(dpNohold1, dpNohold0));
     }
 
     int maxProfitGreedy(vector<int>& prices) {
-        int one_max = -1;
-        int sec_max = -1;
-        int cur = 0;
-        int pur = prices[0];
-        for (int i = 1; i < prices.size(); i++) {
-            if (prices[i] < pur) {
-                pur = prices[i];
-            } else {
-                cur = prices[i] - pur;
-                if (cur > one_max) {
-                    sec_max = one_max;
-                    one_max = cur;
-                }
+        int profit1 = INT_MIN;
+        int buy1 = INT_MAX;
+        int profit2 = INT_MIN;
+        int buy2 = INT_MAX;
+        for (int i = 0; i < prices.size(); i++) {
+            buy1 = min(buy1, prices[i]);
+            profit1 = max(profit1, prices[i] - buy1);
+            buy2 = min(buy2, prices[i] - profit1);
+            profit2 = max(profit2, prices[i] - buy2);
+        }
+        return profit2;
+    }
+
+    // at most transact k times;
+    int maxProfit(int k, vector<int>& prices) {
+        vector<int> dpBuy (k+1, -10000);
+        vector<int> dpNoHold (k+1, -10000);
+        vector<int> nBuy(k+1, -10000);
+        dpBuy[k-1] = 0-prices[0];
+        dpNoHold[k] = 0;
+        for (int i = 0 ; i < prices.size(); i++) {
+            for (int t = k-1; t > -1; t--) {
+                nBuy[t] = max(dpBuy[t], dpNoHold[t+1] - prices[i]);
+            }
+            for (int t = k-1; t > -1; t--) {
+                dpNoHold[t] = max(dpNoHold[t], dpBuy[t] + prices[i]);
+                dpBuy[t] = nBuy[t];
             }
         }
-        if (sec_max == -1)
-            sec_max = 0;
-        return one_max + sec_max;
+        int profit = 0;
+        for (int t = 0; t < k; t++) {
+            if (dpNoHold[t] > profit)
+                profit = dpNoHold[t];
+        }
+        return profit;
     }
 };
 
 int main() {
     Solution s;
-    vector<int> input = {1,2,3,0,4,0};
-    printf("result: %d \n", s.maxProfitSimp(input));
+    vector<int> input = {3,2,6,5,0,3,0,4};
+//    printf("result: %d \n", s.maxProfitGreedy(input));
+    printf("result: %d \n", s.maxProfit(1, input));
 }

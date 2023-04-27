@@ -4,6 +4,20 @@
 #include <string>
 using namespace std;
 
+// reverse traverse example
+void display(set<int> s)
+{
+    set<int>::reverse_iterator itr;
+
+    // Displaying elements of the
+    // set
+    for (itr = s.rbegin();
+         itr != s.rend(); itr++)
+    {
+        cout << *itr << " ";
+    }
+}
+
 int main() {
   char name[20];
   int value;
