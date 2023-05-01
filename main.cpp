@@ -1,5 +1,6 @@
 #include <iostream>
 #include <bitset>
+#include <cstdio>
 #include <climits>
 #include <algorithm>
 #include <string>
@@ -103,12 +104,13 @@ void test_cstring() {
     puts(as);
 }
 
+
 int main() {
 //    test_lower_bound();
 //    test_sizeof();
 //    test_bitset();
 //    test_print_str();
-    test_gets();
+//    test_gets();
 //    test_char();
 //    if (is_big_endian()) {
 //        printf("big endian\n");
@@ -116,5 +118,7 @@ int main() {
 //        printf("little endian\n");
 //    }
 //    test_cstring();
+    printf("%d\n" , (-18) / (-4));
+
     return 0;
 }

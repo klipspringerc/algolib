@@ -18,6 +18,11 @@ typedef pair<int, ii> pii;
 
 #define nearestPowerOfTwo(S) ((int)pow(2.0, (int)((log((double)S) / log(2.0)) + 0.5)))
 
+int gcd(int a, int b)
+{
+    return b == 0 ? a : gcd(b, a % b);
+}
+
 bool comp(int a, int b) {
     return a <= b;
 }
@@ -277,7 +282,42 @@ void test_string() {
     printf("%s\n", ts.c_str());
 }
 
+
+vector<int> counting_sort(vector<int> & nums) {
+    // assume nums range [0-255]
+    vector<int> count(256, 0);
+    for (int num : nums) {
+        count[num]++;
+    }
+    // count sum until each value
+    // count[i] indicates :
+    //  first position of value i in the sorted results;
+    //  or alternatively: how many value smaller than i is in nums.
+    for (int i = 0, sum = 0; i < 256; i++) {
+        int cur_val_count = count[i];
+        count[i] = sum;
+        sum += cur_val_count;
+    }
+    vector<int> results(nums.size());
+    for (int num : nums) {
+        // if there are multiple same values, increment ranking index each time one value is added to results
+        results[count[num]++] = num;
+    }
+    return results;
+}
+
+void run_sort() {
+    vector<int> input = {9,2,0,4,2};
+    vector<int> result = counting_sort(input);
+    for (int num: result) {
+        printf("%d ", num);
+    }
+    printf("\n");
+}
+
 int main() {
+    printf("result: %d\n", gcd(14,18));
+//    run_sort();
 //    test_sort();
 //    test_pow_2();
 //    test_vector();

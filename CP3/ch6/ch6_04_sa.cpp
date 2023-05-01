@@ -80,6 +80,7 @@ void computeLCP_slow() {
 // then each one of them minus their first char, would be another pair of suffices,
 // both have the same prefix of length L-1, and in the same relative order.
 // e.g. if ATAGB is before ATAGBATA, then there must be a TAGB before TAGBATA.
+// so in next loop, start from L-1 instead of from 0
 
 void computeLCP() {
   int i, L;

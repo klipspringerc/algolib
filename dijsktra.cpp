@@ -15,6 +15,7 @@ typedef vector<ii> vii;
 int dists[V];
 int parent[V];
 vector<vii> adjList; // vector of pair<id, dist>
+int forwardTable[V];
 
 void dijsktra(int src, int total_v) {
     for (int i = 0; i < total_v; i++) {
@@ -38,6 +39,22 @@ void dijsktra(int src, int total_v) {
                 dists[v] = new_d;
                 pq.push(make_pair(new_d, v));
                 parent[v] = cur;
+            } else if (new_d == dists[v]) {
+                // non dijsktra: add tie-breaking rule here, so at equal distance, smaller id would be picked
+                int hop_old = parent[v];
+                int hop_new = cur;
+                // recursive trace back to next hop from src
+                while (parent[hop_old] != src) {
+                    hop_old = parent[hop_old];
+                }
+                while (parent[hop_new] != src) {
+                    hop_new = parent[hop_new];
+                }
+                if (hop_new > hop_old) {
+                    dists[v] = new_d;
+                    pq.push(make_pair(new_d, v));
+                    parent[v] = cur;
+                }
             }
         }
     }
@@ -57,7 +74,11 @@ int main() {
             adjList[i].push_back(ii(id, dist));
         }
     }
-    dijsktra(4, total_v);
+    for (int i = 0; i < total_v; i++) {
+        forwardTable[i] = -1;
+    }
+    int src = 0;
+    dijsktra(src, total_v);
     for (int i = 0; i < total_v; i++) {
         if (dists[i] == INT_MAX) {
             printf("no path to %d\n", i);
@@ -67,10 +88,20 @@ int main() {
         int v = i;
         printf("    %d", i);
         while (parent[v] >= 0) {
+            if (parent[v] == src) {
+                forwardTable[i] = v;
+            }
             printf(" <- %d", parent[v]);
             v = parent[v];
         }
         printf("\n");
+    }
+    printf("forward table:\n");
+    for (int i = 0; i < total_v; i++) {
+        if (forwardTable[i]<0) {
+            continue;
+        }
+        printf("dest %d next hop: %d\n", i, forwardTable[i]);
     }
 }
 
