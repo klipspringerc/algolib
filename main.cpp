@@ -104,6 +104,39 @@ void test_cstring() {
     puts(as);
 }
 
+int array_pointers()
+{
+/* let's make the arrays first                                             */
+    int array_A[3] = {1, 2, 3};
+    int array_B[3] = {4, 5, 6};
+    int array_C[3] = {7, 8, 9};
+
+/* now let's declare some pointers to such arrays:                          */
+    int (*pA)[3] = &array_A;
+    int (*pB)[3] = &array_B;
+    int (*pC)[3] = &array_C;  /* notice the difference:                         */
+/* int *pA[3] would be an array of 3 pointers to int because the [] operator*/
+/* has a higher precedence than *(pointer) operator. so the statement would */
+/* read: array_of_3 elements of type_pointer_to_int                         */
+/* BUT, "int (*pA)[3]" is read: pointer_A (points to) type_array_of_3_ints! */
+
+/* so now we need a different array to hold these pointers:                 */
+/* this is called an_ARRAY_of_3_pointers to_type_array_of_3_ints            */
+    int (*ARRAY[3])[3] = {pA, pB, pC};
+
+/* along with a a double pointer to type_array_of_3_ints:                   */
+    int (**PTR)[3] = ARRAY;
+
+/* and check that PTR now points to the first element of ARRAY:             */
+    if (*PTR == pA) printf("PTR points to the first pointer from ARRAY \n");
+
+    PTR++;
+
+    if (*PTR == pB) printf("PTR points to the second pointer from ARRAY! YAY!\n");
+
+    return 0;
+}
+
 
 int main() {
 //    test_lower_bound();
