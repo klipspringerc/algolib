@@ -2,6 +2,7 @@
 #include <map>
 #include <set>
 #include <string>
+#include <iostream>
 using namespace std;
 
 // reverse traverse example
@@ -56,6 +57,11 @@ int main() {
   // based on keys (names)
   for (map<string, int>::iterator it = mapper.begin(); it != mapper.end(); it++)
     printf("%s %d\n", ((string)it->first).c_str(), it->second);
+  // alternative
+    printf("==================\n");
+  for (auto & p : mapper) {
+      printf("%s %d\n", ((string)p.first).c_str(), p.second);
+  }
 
   // map can also be used like this
   printf("steven's score is %d, grace's score is %d\n",
@@ -82,6 +88,11 @@ int main() {
   // returns [77, 78, 80, 81, 82] (these five are equal or after 77 in the inorder traversal of this BST)
   for (set<int>::iterator it = used_values.lower_bound(77); it != used_values.end(); it++)
     printf("%d,", *it);
+  printf("\n");
+  // alterntive
+  for (const auto & v : used_values) {
+      printf("%d, ", v);
+  }
   printf("\n");
   // O(log n) search, not found
   if (used_values.find(79) == used_values.end())
