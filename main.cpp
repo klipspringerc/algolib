@@ -151,7 +151,7 @@ int main() {
 //        printf("little endian\n");
 //    }
 //    test_cstring();
-    printf("%d\n" , (-18) / (-4));
+    printf("%d\n" , (-1 + 8) % (8));
 
     return 0;
 }
