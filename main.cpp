@@ -3,7 +3,9 @@
 #include <cstdio>
 #include <climits>
 #include <algorithm>
+#include <vector>
 #include <string>
+#include "mp/io.h"
 using namespace std;
 
 
@@ -61,21 +63,21 @@ void test_lower_bound() {
     cout << idx << endl;
 }
 
-void test_gets() {
-    char str[20];
+//void test_gets() {
+//    char str[20];
 //    while (gets(str) != NULL) {
 //        int str_len = strlen(str);
 //        printf("input length: %d last char %c \n", str_len, str[str_len - 1]);
 //    }
-    while (gets(str) != NULL) {
-        while (strlen(str)) {
-            puts("receive line");
-            if (gets(str) == NULL)
-                break;
-        }
-        puts("process");
-    }
-}
+//    while (gets(str) != NULL) {
+//        while (strlen(str)) {
+//            puts("receive line");
+//            if (gets(str) == NULL)
+//                break;
+//        }
+//        puts("process");
+//    }
+//}
 
 int is_big_endian(void)
 {
@@ -137,8 +139,35 @@ int array_pointers()
     return 0;
 }
 
+class TS {
+public:
+    int id;
+    int key;
+    double v;
+    long double lv;
+    long lk;
+    long long llk;
+    vector<int> history;
+    TS(int _id) {
+        id = _id;
+    }
+    TS(TS & a) {
+        id = a.id;
+        history = a.history;
+    }
+    virtual int get_result(int mode)  {
+        return key;
+    }
+};
+
 
 int main() {
+    TS t(1);
+    cout << sizeof(t) <<endl;
+    t.history.clear();
+    cout << sizeof(t) <<endl;
+
+//    int r = scgt_write();
 //    test_lower_bound();
 //    test_sizeof();
 //    test_bitset();
