@@ -6,6 +6,7 @@
 #include <iostream>
 #include <fstream>
 #include <vector>
+#include <cstring>
 using namespace std;
 
 void cppIO() {
@@ -31,9 +32,7 @@ void cppIO() {
     fout.close();
 }
 
-int main() {
-    cppIO();
-    return 0;
+void cio() {
     char filename[20];
     scanf("%s", filename);
     FILE *f, *fout;
@@ -54,4 +53,28 @@ int main() {
     fprintf(fout, "\n");
     fflush(fout);
     fclose(fout);
+}
+
+void cppscan() {
+    string t, name;
+    int v;
+    cin >> t >> v >> name;
+    printf("%ld\n", strlen(t.c_str()));
+    printf("%s %d %s\n", t.c_str(), v, name.c_str());
+
+}
+
+void cscan() {
+    char t[20], name[20];
+    int v;
+    scanf("%s %d %s", t, &v, name);
+    printf("%s %d %s\n", t, v, name);
+
+}
+
+int main() {
+    cppscan();
+//    cppIO();
+    return 0;
+
 }

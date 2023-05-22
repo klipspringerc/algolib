@@ -10,6 +10,7 @@
 # Unignore all dirs
 !*/
 
+.vscode/
 out.txt
 test*.txt
 
