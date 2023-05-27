@@ -1,0 +1,1 @@
+g++ -std=c++11 -I/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/asio-1.18.2/include -Wno-deprecated-declarations simple_client.cpp netcm/net_tsqueue.cpp -o clt && ./clt && rm clt

@@ -113,7 +113,7 @@ void work(int n) {
     cout <<  "thread " << this_thread::get_id() << " work routine started with n " << n << endl;
     int opc = 0;
     for (int i = 0; i < 10000; i++) {
-        if (i % n != 0) {
+        if (i % n == 0) {
             data[i]++;
             opc++;
         }

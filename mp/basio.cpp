@@ -16,7 +16,7 @@
 #include <asio/ts/buffer.hpp>
 #include <asio/ts/internet.hpp>
 
-std::vector<char> vBuffer(1 *1024);
+std::vector<char> vBuffer(2 *1024);
 
 void GrabSomeData(asio::ip::tcp::socket & socket) {
 

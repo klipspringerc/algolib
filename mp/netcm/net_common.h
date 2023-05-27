@@ -7,5 +7,13 @@
 
 #include <cstdlib>
 #include <vector>
+#include <iostream>
+#include <type_traits>
+#include <queue>
+#include <mutex>
+#include <memory>
+#include <asio.hpp>
+#include <asio/ts/buffer.hpp>
+#include <asio/ts/internet.hpp>
 
 #endif //ALGOLIB_NET_COMMON_H

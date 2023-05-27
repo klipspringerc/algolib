@@ -1,7 +1,9 @@
 //
 // https://leetcode.com/problems/sum-of-scores-of-built-strings/description/
 // An application of z-function
-// useful visualization of z-function: https://personal.utdallas.edu/~besp/demo/John2010/z-algorithm.htm
+// useful visualization of z-function: https://personal.utdallas.edu/~besp/demo/John2010/z-algorithm.html
+// the main idea is to reuse common prefix length result from z[l] and z[i-l] to jump start comparison at `i`.
+// z[l] gives a range [l-r] where s[l:r] is a replay of s[0:r-l], where z[i-l] could be reused at z[i]
 
 #include <string>
 #include <cstdio>
@@ -19,10 +21,11 @@ public:
         for (int i = 1; i < n; i++) {
             if (i < r) {
                 // the segment between s[l: r] is exactly the same with s[0: r-l]
-                // so when computing prefix length at s[i], if i < r, could always init from z[i-l],
+                // so when computing prefix length at s[i], if i < r, could init from z[i-l],
                 // which is the common prefix length starting from s[i-l]. computed in previous iteration
                 // e.g. the segment s[0: z[i-l]]  was already known to match s[i-l: i-l + z[i-l]]
                 // so segment s[i: min(i+z[i-l],  r)] is known to match s[0: min(z[i-l], r-i)]
+                // note the z[i] could not init beyond r-i, because only s[l:r] is guaranteed to be the same with s[0:r-l].
                 z[i] = min(z[i-l], r-i);
             }
             while (s[z[i]] == s[i + z[i]]) {

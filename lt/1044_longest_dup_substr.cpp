@@ -71,6 +71,16 @@ public:
             }
 
         }
+        // the main idea is to use sorted SA to jump start next comparison
+        // e.g. consider the SA array
+        // a b a b e
+        // a b e
+        // b a b e
+        // b e
+        // e
+        // phi record the previous SA in this sorted order
+        // so after comparing ababe and abe, L = 2, then when moving on to next position babe and be, L could start at 2-1=1
+
         vector<int> phi (n);
         phi[0]= -1;
         for (int i = 1; i < n; i++)
@@ -90,7 +100,6 @@ public:
             if (i == 0) {
                 cout << "idx 0 got L value " << L << endl;
                 cout << (s[i + L] == s[phi[i]+L]) << endl;
-
             }
             if (L > max_lcp) {
                 max_lcp = L;
@@ -130,7 +139,31 @@ public:
 
 };
 
+void test() {
+    string t = "ababe";
+    t.append("$");
+    vector<string> sa;
+    for (int i = 0; i < t.length(); i++) {
+        sa.push_back(t.substr(i, t.length()-i));
+    }
+    sort(sa.begin(), sa.end());
+    for (auto s : sa)
+        printf("%s\n", s.c_str());
+
+    vector<pair<string, int>> sap(t.length());
+    for (int i = 0 ; i < t.length(); i++) {
+        sap[i] = make_pair(t.substr(i, t.length() - i), i);
+    }
+    sort(sap.begin(), sap.end(), greater<pair<string, int>>());
+//    reverse(sap.begin(), sap.end());
+    for (auto p : sap) {
+        printf("%s %d\n", p.first.c_str(), p.second);
+    }
+}
+
 int main() {
+    test();
+    return 0;
     Solution s;
 //    string r = s.longestDupSubstring("GATAGACA");
     string tl  = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";

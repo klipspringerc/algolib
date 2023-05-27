@@ -6,6 +6,9 @@
 #include <atomic>
 #include <vector>
 #include <string>
+#include <sstream>
+#include <memory>
+#include <utility>
 
 #include "mp/io.h"
 using namespace std;
@@ -197,8 +200,9 @@ void lambda() {
         cout << (num+=1) + f << endl;
     }(3.0);
     cout << num << endl;
-
 }
+
+
 class TS {
 public:
     int id;
@@ -227,10 +231,10 @@ public:
 class TA {
 public:
     int id;
-    TS(int _id) {
+    TA(int _id) {
         id = _id;
     }
-    TS(TS & a) {
+    TA(TA & a) {
         id = a.id;
     }
 };
@@ -239,10 +243,10 @@ public:
 class TB {
 public:
     int id;
-    TS(int _id) {
+    TB(int _id) {
         id = _id;
     }
-    TS(TS & a) {
+    TB(TB & a) {
         id = a.id;
     }
     virtual int get_result(int mode)  {
@@ -286,6 +290,8 @@ void size_alignment() {
     struct J {long double a; vector<int> b;}; // 48 byte, aligned to long double, (vector==3 uint64_t)
     struct K {long double a; vector<int> b; long double c;}; // 64 byte, aligned to long double. vector (25byte) need 2*16=32 byte room
     struct L {long double a; vector<int> b; long double c; int* d;}; // 80 byte, aligned to long double. vector (25byte) need 2*16=32 byte room, pointer takes another 16 byte
+    struct M {bool a;}; // 1 byte
+    struct N {bool a; bool b;}; // 2 byte
     // class virtual method follows the same rule, but add a 8 byte virtual table pointer as the first element
     cout << sizeof(A) <<endl;
     cout << sizeof(B ) << endl;
@@ -298,12 +304,125 @@ void size_alignment() {
     cout << sizeof(J) << endl;
     cout << sizeof(K) << endl;
     cout << sizeof(L) << endl;
+    cout << sizeof(M) << endl;
+    cout << sizeof(N) << endl;
     cout << "----" << endl;
     cout << sizeof(TS) << endl;
 
 }
 
+void termpass(int v) {
+    cout << "value " << v <<endl;
+}
+
+// const int & would match anything
+// while int & would not match rvalue.
+void passint(const int & a) {
+    cout <<"const ref " << a << endl;
+//    termpass(a);
+}
+
+void passint(const int && a) {
+    cout << "rvalue ref " << a << endl;
+}
+
+void refpass(const int & a) {
+    passint(a); // due to const ref param, would always match const ref
+}
+
+void rrpass(int && a) {
+    passint(a); // due to ref param param, would always match const ref
+}
+
+void forwardpass(int && a) {
+    passint(forward<int>(a)); // use forward to preserve rvalue property
+}
+
+void passarg() {
+    // pass rvalue
+    passint(14); // would match rvalue ref
+    int v = 15;
+    passint(ref(v));
+    passint(v); // would match const ref
+    int & rv = v;
+//    passint(rv); // match const ref
+//    passint(static_cast<int &&>(rv)); // r value ref
+//    passint(forward<int>(rv)); // r value ref
+    rrpass(15); // match const ref
+    refpass(15); // match const ref
+    refpass(v); // match const ref
+    forwardpass(15); // match r value ref
+    forwardpass(forward<int>(v)); // match r value ref
+//    forwardpass(v); // cannot match
+}
+
+
+void strstream() {
+//    ostream pout;
+//    pout << "test text";
+    stringstream ss ;
+    ss << "test text " << " ttttt ";
+    string mys = ss.str();
+    cout << mys << endl;
+    int v = stoi("123"); // atoi only support c style string
+    cout << v << endl;
+    stringstream sb("42 53 64");
+    int num;
+    sb >> num;
+    cout << num << endl;
+    sb >> num;
+    cout << num << endl;
+    sb >> num;
+    cout << num << endl;
+    sb >> num; // this lead to double 64 read
+    cout << num << endl;
+}
+
+void implode_str() {
+    std::vector<std::string> strings = {"today" , "is" , "new"};
+
+    cout << "join string:" <<endl;
+    const char* const delim = ",";
+    // generate a string that is ",",join(strings)
+    std::ostringstream imploded;
+    std::copy(strings.begin(), strings.end(),
+              std::ostream_iterator<std::string>(imploded, delim));
+    string result  = imploded.str();
+    result.pop_back();
+    cout <<result <<endl;
+
+    cout << "split string:" <<endl;
+    string input = "a,b,c,d";
+    size_t pos=0;
+    size_t next;
+    while ((next = input.find(",", pos)) != string::npos) {
+        cout << input.substr(pos, next-pos) << endl;
+        pos = next+1;
+    }
+    cout << input.substr(pos) << endl;
+}
+
+
+void strman() {
+    implode_str();
+    strstream();
+}
+
+void littleend() {
+    char arr[2];
+    arr[0] = uint8_t (0);
+    arr[1] = 1;
+    uint16_t * v = (uint16_t *) arr;
+    cout << *v << endl;
+}
+
+
+
 int main() {
+    littleend();
+//    size_alignment();
+//    passarg();
+//    strman();
 //    constexpr auto r = factorial(4);
 //    cout << r <<endl;
 //    lambda();
