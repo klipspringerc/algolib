@@ -12,6 +12,8 @@
 #include <queue>
 #include <mutex>
 #include <memory>
+#include <thread>
+#include <exception>
 #include <asio.hpp>
 #include <asio/ts/buffer.hpp>
 #include <asio/ts/internet.hpp>

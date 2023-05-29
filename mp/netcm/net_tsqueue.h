@@ -1,5 +1,5 @@
 //
-// Created by SG0014000445M on 2023/5/23.
+// lock guard wrapped deque
 //
 #pragma once
 

@@ -11,6 +11,7 @@
 #include <string>
 #include <map>
 #include <set>
+#include <iostream>
 using namespace std;
 
 typedef pair<int, int> ii;
@@ -315,8 +316,61 @@ void run_sort() {
     printf("\n");
 }
 
+void lambda_sort() {
+    class Segment {
+    public:
+        int l;
+        int r;
+        Segment() = delete;
+        Segment(int _l, int _r) : l(_l), r(_r) {}
+    };
+    Segment a {1,3};
+    Segment b {2,4};
+    Segment c {2, 3};
+    auto cmp = [](const Segment & x, const Segment & y) {
+        if (x.l < y.l)
+            return true;
+        else if (x.l == y.l)
+            return x.r > y.r;
+        else
+            return false;
+    };
+    vector<Segment> arr = {c, a, b};
+    sort(arr.begin(), arr.end(), cmp);
+    for (auto s : arr)
+        cout << s.l << " " << s.r << endl;
+}
+
+void partition() {
+//    vector<int> nums = {6,9,2,7,3,5,4};
+    vector<int> nums = {2,4};
+    int ptr = 1;
+    int pl = 0;
+    int pr = nums.size();
+    int v = nums[0];
+    while (ptr  < pr) {
+        if (nums[ptr] <= v) {
+            pl++;
+            ptr++;
+        } else {
+            pr--;
+            int tmp = nums[pr];
+            nums[pr] = nums[ptr];
+            nums[ptr] = tmp;
+        }
+    }
+    nums[0] = nums[ptr-1];
+    nums[ptr-1] = v;
+    for (int n : nums) {
+        cout << n << ",";
+    }
+    cout <<endl;
+}
+
 int main() {
-    printf("result: %d\n", gcd(14,18));
+    partition();
+//    printf("result: %d\n", gcd(14,18));
+//    lambda_sort();
 //    run_sort();
 //    test_sort();
 //    test_pow_2();

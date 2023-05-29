@@ -3,12 +3,24 @@
 //
 
 #include "netcm/net_message.h"
+#include "netcm/net_client.h"
 
 enum class CustomMsgTypes: uint32_t {
     FireBullet, MovePlayer
 };
 
-int main() {
+class CustomClient : public olc::net::client_interface<CustomMsgTypes> {
+    public:
+    bool Fire(float x, float y) {
+        olc::net::message<CustomMsgTypes> msg;
+        msg.header.id = CustomMsgTypes::FireBullet;
+        msg << x << y;
+        // Send(msg)
+        return true;
+    }
+};
+
+int testMsg() {
     olc::net::message<CustomMsgTypes> msg;
     msg.header.id = CustomMsgTypes::FireBullet;
     int a = 1;
@@ -24,5 +36,11 @@ int main() {
     msg >> d >>c >> b >> a;
     std::cout << a << " "<< b << " " << c << " " << d[1].x << std::endl;
     return 0;
+}
 
+int main() {
+    CustomClient c;
+    bool ok = c.Connect("community.onelonecoder.com", 60000);
+    c.Fire(2.0f, 5.0f);
+    return 0;
 }
