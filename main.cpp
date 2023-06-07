@@ -416,10 +416,22 @@ void littleend() {
     cout << *v << endl;
 }
 
+template <typename... Things>
+void printVariadic(Things... things) {
+    for(const auto p : {things...}) {
+        std::cout << p << " ";
+    }
+    cout << endl;
+}
 
+void variadic_template() {
+    printVariadic(1, 2, 3, 2);
+    printVariadic("test", "a", "string");
+}
 
 int main() {
-    littleend();
+    variadic_template();
+//    littleend();
 //    size_alignment();
 //    passarg();
 //    strman();
