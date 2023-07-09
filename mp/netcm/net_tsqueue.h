@@ -7,6 +7,7 @@
 
 namespace olc {
     namespace net {
+        using std::mutex;
         template <typename T>
         class tsqueue {
         protected:
@@ -65,7 +66,7 @@ namespace olc {
 
             void clear() {
                 std::lock_guard<mutex> lock(mux);
-                deq.clear()
+                deq.clear();
             }
         };
 

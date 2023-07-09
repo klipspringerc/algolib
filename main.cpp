@@ -335,7 +335,7 @@ void rrpass(int && a) {
 }
 
 void forwardpass(int && a) {
-    passint(forward<int>(a)); // use forward to preserve rvalue property
+    passint(std::forward<int>(a)); // use forward to preserve rvalue property
 }
 
 void passarg() {
@@ -352,7 +352,7 @@ void passarg() {
     refpass(15); // match const ref
     refpass(v); // match const ref
     forwardpass(15); // match r value ref
-    forwardpass(forward<int>(v)); // match r value ref
+    forwardpass(std::forward<int>(v)); // match r value ref
 //    forwardpass(v); // cannot match
 }
 
@@ -429,8 +429,27 @@ void variadic_template() {
     printVariadic("test", "a", "string");
 }
 
+struct TSP {
+    int val =13 ;
+    TSP(): val(12) {};
+    explicit TSP(int s): val(s) {cout << "int constructor called with "  << s << endl;}
+    explicit TSP(const string & v): val(42) {cout << "str constructor called with "  << v << endl;}
+    ~TSP() {cout << "destructor called" << endl;}
+};
+
+void inplace_ptr() {
+    auto ptr = make_shared<TSP> (22);
+    string v = "test";
+    auto ptr2 = std::make_shared<TSP>(v);
+    cout << ptr2->val << endl;
+}
+
+struct TEMP{int a;};
+
 int main() {
     variadic_template();
+    inplace_ptr();
+    cout << sizeof (TEMP) << endl;
 //    littleend();
 //    size_alignment();
 //    passarg();

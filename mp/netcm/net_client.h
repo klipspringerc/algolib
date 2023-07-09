@@ -21,7 +21,7 @@ namespace olc {
             // incoming message from server
             tsqueue<owned_message<T>> m_msg_in;
         public:
-            client_interface() m_socket(m_ctx) {
+            client_interface(): m_socket(m_ctx) {
 
             }
 
@@ -32,15 +32,15 @@ namespace olc {
 
             bool Connect(const std::string & host, const uint16_t port) {
                 try {
-                    m_connection = std::make_unique<connection<T>>(); // TODO: init conn
+                    m_connection = std::make_unique<connection<T>>(owner::client, m_ctx, m_socket, m_msg_in); // TODO: init conn
                     asio::ip::tcp::resolver resolver(m_ctx);
                     m_endpoints = resolver.resolve(host, std::to_string(port)); // could fail with exception
 
                     m_connection->ConnectToServer(m_endpoints);
-                    thr_ctx = std::thread([this]() { m_context.run(); });
+                    thr_ctx = std::thread([this]() { m_ctx.run(); });
 
                 } catch (std::exception & e) {
-                    std::cerr << "client exception: " << e.what() << endl;
+                    std::cerr << "client exception: " << e.what() << std::endl;
                     return false;
                 }
                 return false;

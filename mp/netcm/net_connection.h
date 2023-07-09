@@ -11,7 +11,7 @@
 
 namespace olc {
     namespace net {
-        template <typename T>
+    template <typename T>
     class connection: public std::enable_shared_from_this<connection<T>> {
     public:
         enum class owner
@@ -31,7 +31,7 @@ namespace olc {
         message<T> m_msg_tmp_in;
 
         owner m_owner_type = owner::server;
-
+        uint32_t id;
 
 
     public:
@@ -60,12 +60,12 @@ namespace olc {
                     if(!ec) {
                         ReadHeader();
                     }
-                })
+                });
             }
 
         }
         bool Disconnect(){
-            if (isConnected()) 
+            if (IsConnected()) 
                 asio::post(m_ctx, [this](){m_socket.close();});
         }
     
@@ -78,7 +78,7 @@ namespace olc {
             asio::post(m_ctx, [this, msg]() {
                 // queue has message, push current msg into queue. Otherwise start writing to socket
 
-            })
+            });
         };
 
 
@@ -87,16 +87,16 @@ namespace olc {
         void ReadHeader() {
             // If this function is called, we are expecting asio to wait until it receives enough bytes to form
             // a header.
-            asio::async_read(m_socket, asio::buffer(&m_msg_tmp_in.header, sizeof(message_header)),
+            asio::async_read(m_socket, asio::buffer(&m_msg_tmp_in.header, sizeof(m_msg_tmp_in.header)),
             [this](std::error_code ec, std::size_t length) {
                 if (!ec) {
                     // A complete message header has been read, check if this message
                     // has a body to follow...
-                    if (m_msgTemporaryIn.header.size > 0)
+                    if (m_msg_tmp_in.header.size > 0)
                     {
                         // ...it does, so allocate enough space in the messages' body
                         // vector, and issue asio with the task to read the body.
-                        m_msgTemporaryIn.body.resize(m_msgTemporaryIn.header.size);
+                        m_msg_tmp_in.body.resize(m_msg_tmp_in.header.size);
                         ReadBody();
                     }
                     else
@@ -117,7 +117,7 @@ namespace olc {
             // If this function is called, a header has already been read, and that header
             // request we read a body, The space for that body has already been allocated
             // in the temporary message object, so just wait for the bytes to arrive...
-            asio::async_read(m_socket, asio::buffer(m_msgTemporaryIn.body.data(), m_msgTemporaryIn.body.size()),
+            asio::async_read(m_socket, asio::buffer(m_msg_tmp_in.body.data(), m_msg_tmp_in.body.size()),
                 [this](std::error_code ec, std::size_t length)
                 {						
                     if (!ec)
@@ -139,10 +139,10 @@ namespace olc {
         {				
             // Shove it in queue, converting it to an "owned message", by initialising
             // with the a shared pointer from this connection object
-            if(m_nOwnerType == owner::server)
-                m_qMessagesIn.push_back({ this->shared_from_this(), m_msgTemporaryIn });
+            if(m_owner_type == owner::server)
+                q_msg_in.push_back({ this->shared_from_this(), m_msg_tmp_in });
             else
-                m_qMessagesIn.push_back({ nullptr, m_msgTemporaryIn });
+                q_msg_in.push_back({ nullptr, m_msg_tmp_in });
             // Must re prime the asio context to receive the next message. It 
             // will just sit and wait for bytes to arrive, and the message construction
             // process repeats itself.
