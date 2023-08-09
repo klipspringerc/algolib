@@ -13,6 +13,8 @@
 .vscode/
 out.txt
 test*.txt
+output.txt
+*.db
 
 # Custom files
 cmake-build-debug

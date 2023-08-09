@@ -68,6 +68,8 @@ namespace olc {
                             m_deq_connections.back()->ConnectToClient(nIDCounter++);
 
                             std::cout << "[" << m_deq_connections.back()->GetID() << "] Connection Approved\n";
+                        } else {
+                            std::cout << "[-] Connection Rejected\n";
                         }
                     } else {
                         std::cout << "[Server] New connection err: " << ec.message() << std::endl;
@@ -77,10 +79,45 @@ namespace olc {
             }
 
             void MessageClient(std::shared_ptr<connection<T> client, consg message<T> & msg) {
-
+                if (client && client->IsConnected()) {
+                    client->Send(msg);
+                } else {
+                    OnClientDisconnect(client);
+                    client.reset(); // reset the shared pointer
+                    m_deq_connections.erase(std::remove(m_deq_connections.begin(), m_deq_connections.end(), client), m_deq_connections.end());
+                }
             }
 
             void MessageAllClients(const message<T> & msg, std::shared_ptr<connection<T>> ignore_clt) {
+                bool cleanupInvalidClient = false;
+                for (auto & client : m_deq_connections) {
+                    if (client && client->IsConnected()) {
+                        if (cient != ignore_clt)
+                            client->Send(msg);
+                    } else {
+                        OnClientDisconnect(client);
+                        client.reset(); // reset the shared pointer
+                        cleanupInvalidClient = true;
+                    }
+                }
+
+                // small optimisation: loop all client first, then if invalid client exist,
+                    // call remove on nullptr instead
+                if (cleanupInvalidClient)
+                    m_deq_connections.erase(std::remove(m_deq_connections.begin(), m_deq_connections.end(), nullptr), m_deq_connections.end());
+            }
+
+            // pass message from queue to handlers
+            // limit the number of messages the server process in each go
+            // so the handler won't be overwhelmed with too many messages
+            void Update(size_t nMaxMsgs = -1) {
+                size_t n_msg_count = 0;
+                while (n_msg_count < nMaxMsgs && !q_msg_in.empty()) {
+                    auto msg = q_msg_in.pop_front();
+                    // pass to message handler
+                    OnMessage(msg.remote, msg.msg); // msg.remote is the msg owner
+                    n_msg_count++;
+                }
 
             }
 
